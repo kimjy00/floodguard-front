@@ -7,8 +7,8 @@ class KakaoOverlay{
             clickable: true,
             content: content,
             position: null,
-            xAnchor: 0.5,
-            yAnchor: 1.5,
+            xAnchor: -0.5,
+            yAnchor: 1,
             zIndex: 3
         });
     }
