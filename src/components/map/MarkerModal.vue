@@ -2,12 +2,12 @@
     <div class="marker-modal">
     <div class="child">
         <h1>마커 생성기</h1>
-        <form v-on:submit="onSubmitForm">
+        <div>
         지역이름:<input type="text" v-model="pos"><br>
         코멘트:<input type="text" v-model="comment"><br>
         <button @click="create">생성</button>
         <button @click="close">닫기</button>
-    </form>
+    </div>
     </div>
 </div>
 </template>
@@ -68,13 +68,15 @@ export default {
                 .post(`/api/v1/pins/pin`, param, {})
                 .then((res) => {
                 console.log("---axios Post 성공---- ");
-                this.data = res.data;
+                this.info.id = res.data.result;
+                this.info.latlng = this.latlng;
+                this.info.pos = this.pos;
+                this.$emit("create",this.info)
+                console.log("아이디:"+ res.data.result)
             })
                 .catch((res) => {
                 console.error(res);
             });
-            this.info.latlng = this.latlng
-            this.$emit("create",this.info)
         },
         close(){
             this.$emit('cancel')

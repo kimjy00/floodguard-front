@@ -5,7 +5,8 @@
         <div class="overlay-popup" ref="overlayContent">
           <div v-if="selectedMarker">
             <h3>{{ selectedMarker.name }}</h3>
-            <div v-if="selectedMarker.loaded">
+            <div v-if="this.selectedMarker.type == 0">
+              <div v-if="selectedMarker.loaded">
               <video class="cctv-video" autoplay ref="videoPlayer">
               <source :src="selectedMarker.url" type="video/mp4">
             </video>
@@ -16,10 +17,19 @@
                 </div>
             </div>
             <br>
+            </div>
+            <p>{{selectedMarker.comment}}</p>
+            <p></p>
             <a href="#" @click.prevent="closeOverlay()">close</a>
-            <div v-if="this.$store.state.userstore.token">
-              <a v-if="!isFavorite(selectedMarker.id)" href="#" style="float: right;" @click.prevent="doFavorite()">관심사 등록</a>
-            <a v-else href="#" style="float: right;" @click.prevent="doFavorite()">관심사 해제</a>
+            <div v-if="this.$store.state.userstore.userRole == 'ADMIN' && selectedMarker.type != 2">
+              <a href="#" style="float: center;" @click.prevent="removeMarker(selectedMarker.id)">삭제</a>
+            </div>
+            <div v-if="this.$store.state.userstore.token && selectedMarker.type != 2">
+              <a v-if="!isFavorite(selectedMarker.id)" href="#" style="float: right;" @click.prevent="doFavorite(selectedMarker.id)">관심사 등록</a>
+              <a v-else href="#" style="float: right;" @click.prevent="doFavorite(selectedMarker.id)">관심사 해제</a>
+            </div>
+            <div v-else>
+              <a href="#" style="float: right;" @click.prevent="removeMarker(selectedMarker.id)">삭제</a>
             </div>
           </div>
         </div>
@@ -39,6 +49,8 @@
 }
 .overlay-popup{
     background-color: white;
+    min-width: 200px;
+    min-height: 100px;
     position: absolute;
     bottom: 35px;
     /* right: 30px; */
@@ -155,18 +167,13 @@ export default {
         }
         marker.id = id;
         marker.name = title;
+        marker.type = type
         this.setMarker(marker);
     },
     createMarker(info){
       this.isMarkerCreate = false;
-      var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-      var imageSize = new window.kakao.maps.Size(24, 35); 
-      var markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
-      var marker = new window.kakao.maps.Marker({
-          position: info.latlng,
-          image: markerImage
-        });
-        this.setMarker(marker)
+      this.addMarker(info.latlng,info.id,info.pos,2)
+      this.doFavorite(info.id);
     },
     createMarkerCancel(){
       this.isMarkerCreate = false;
@@ -187,6 +194,7 @@ export default {
                 return;
               }
               this.selectedMarker.url = res.data.result.url;
+              this.selectedMarker.comment = res.data.result.comment;
               this.selectedMarker.loaded = true;
               this.$refs.videoPlayer.load();
               this.$emit('updateData', false)
@@ -196,17 +204,16 @@ export default {
             }
         })
     },
-    doFavorite(){
-      if(this.favorite.includes(this.selectedMarker.id)){
-        var id = this.selectedMarker.id
+    doFavorite(id){
+      if(this.favorite.includes(id)){
         this.favorite = this.favorite.filter(function(data) {
           return data != id;
         });
       }
       else{
-        this.favorite.push(this.selectedMarker.id);
+        this.favorite.push(id);
       }
-      axios.get('/api/v1/pins/pin/register/'+this.selectedMarker.id)
+      axios.get('/api/v1/pins/pin/register/'+id)
               .then(res => {
                 if(res.status != 200){
                 console.log("잘못된 api 호출 : GET : /pins/");
@@ -215,13 +222,20 @@ export default {
             }).catch(err => {
               console.log(err, err.response); 
             })
+      return;
     },
     isFavorite(id){
       console.log(id)
       console.log(this.favorite)
       return this.favorite.includes(id)
     },
+    removeMarker(id){
+      this.selectedMarker.setMap(null);
+      this.closeOverlay();
+      axios.delete('/api/v1/pins/pin/'+id);
+    },
     closeOverlay(){
+      this.selectedMarker = null;
       this.overlay.hide()
     },
   },
