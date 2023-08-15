@@ -1,34 +1,35 @@
 <template>
-  <div style="display: flex;position: absolute;justify-content: center;align-items: center; z-index: 3;background-color: rgba(0, 0, 0, 0.8); width: 100%;height: 100%;">
-    <div class="wrap">
-      <div class="login">
-        <img src="../../assets/images/x.png" alt="dfsdf" data-bs-dismiss="modal"
-          style="width:10%;height:8%;position:absolute;top:4%;right:10%">
-        <h2>Log-in</h2>
-        <div class="login_id">
-          <h4>E-mail</h4>
-          <input type="email" name="" id="" placeholder="Email">
-        </div>
-        <div class="login_pw">
-          <h4>Password</h4>
-          <input type="password" name="" id="" placeholder="Password">
-        </div>
-        <div class="login_etc">
-          <div class="checkbox">
-            <input type="checkbox" name="" id=""> Remember Me?
+  <div v-if="!isregister">
+    <div class="login-back" v-if="this.$store.state.popupstore.loginPopUp">
+      <div class="wrap">
+        <div class="login">
+          <img src="../../assets/images/x.png" alt="dfsdf" data-bs-dismiss="modal"
+            style="width:10%;height:8%;position:absolute;top:4%;right:10%" @click="close">
+          <h2>Log-in</h2>
+          <div class="login_id">
+            <h4>ID</h4>
+            <input type="text" name="" id="" placeholder="ID" v-model="id">
           </div>
-          <div class="forgot_pw">
-            <a href="">Forgot Password?</a>
+          <div class="login_pw">
+            <h4>Password</h4>
+            <input type="password" name="" id="" placeholder="Password" v-model="password">
           </div>
-        </div>
-        <div class="submit">
-          <input type="submit" value="submit">
+          <div class="login_etc">
+            <div class="checkbox">
+              <input type="checkbox" name="" id=""> Remember Me?
+            </div>
+            <div class="forgot_pw">
+              <a href="#" @click="toggleRegister">회원가입 하기</a>
+            </div>
+          </div>
+          <div class="submit">
+            <button @click="login">로그인</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
-  <div v-if="isregister">
+  <div v-else>
     <div class="r-login" v-if="this.$store.state.popupstore.loginPopUp">
       <div class="child">
         <h1>회원가입</h1>
@@ -46,20 +47,6 @@
       </div>
     </div>
   </div>
-  <div v-else>
-    <div class="r-login" v-if="this.$store.state.popupstore.loginPopUp">
-      <div class="child">
-        <h1>로그인</h1>
-        <div>
-          아이디:<input type="text" v-model="id"><br>
-          패스워드:<input type="password" v-model="password"><br>
-          <button @click="login">로그인</button>
-          <button @click="close">닫기</button>
-          <button @click="toggleRegister">회원가입 하기</button>
-        </div>
-      </div>
-    </div>
-  </div>
 </template>
 
 <style scoped>
@@ -68,6 +55,17 @@
   padding: 0;
 
   font-family: "Noto Sans KR", sans-serif;
+}
+
+.login-back {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+  background-color: rgba(0, 0, 0, 0.8);
+  width: 100%;
+  height: 100%;
 }
 
 a {
@@ -164,7 +162,7 @@ h2 {
   width: 80%;
 }
 
-.submit input {
+.submit button {
   width: 100%;
   height: 50px;
   border: 0;
