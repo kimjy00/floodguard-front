@@ -61,13 +61,23 @@ export default {
                 console.log("틀림")
               }
               else{
+                axios.create({
+                  headers: {
+                    Authorization:"Bearer "+ res.data,
+                  }
+                })
+                .get("/api/v1/users/info")
+                .then((res2) => {
                 const payload = {
-                token : res.data
+                  token : res.data,
+                  userid : res2.data.result.userid,
+                  username : res2.data.result.username,
+                  role : res2.data.result.role
                 }
                 console.log("3?")
                 this.$store.commit('userstore/login', payload);
                 this.close()
-                console.log(res.data)
+                });
               }
               console.log("---axios Post 성공---- ");
         })

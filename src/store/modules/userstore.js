@@ -1,5 +1,4 @@
 import router from "@/router/router";
-
 const userstore = {
     namespaced: true,
     state : {
@@ -7,6 +6,7 @@ const userstore = {
         logined : false,
         userId: '',
         userName: '',
+        userRole: '',
         token: '',
     },
     getters : {
@@ -23,8 +23,11 @@ const userstore = {
         },
         login: function (state, payload) {
             state.token = "Bearer "+ payload.token;
+            state.userId = payload.userid;
+            state.userName = payload.username;
+            state.userRole = payload.role;
             state.logined = true;
-            router.go(0)
+            router.go(0);
         },
         logout: function(state){
           state.logined = false;

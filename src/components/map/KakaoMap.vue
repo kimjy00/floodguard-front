@@ -17,6 +17,10 @@
             </div>
             <br>
             <a href="#" @click.prevent="closeOverlay()">close</a>
+            <div v-if="this.$store.state.userstore.token">
+              <a v-if="!isFavorite(selectedMarker.id)" href="#" style="float: right;" @click.prevent="doFavorite()">관심사 등록</a>
+            <a v-else href="#" style="float: right;" @click.prevent="doFavorite()">관심사 해제</a>
+            </div>
           </div>
         </div>
       </slot>
@@ -63,7 +67,8 @@ export default {
       overlay: null,
       selectedMarker: null,
       selectedPos:null,
-      isMarkerCreate: false
+      isMarkerCreate: false,
+      favorite: [],
     };
   },
   setup() {
@@ -107,7 +112,7 @@ export default {
         this.closeOverlay();
       });
       this.overlay = new KaKaoOverlay(this.map,this.$refs.overlayContent)
-
+      
       axios
       .get('/api/v1/pins/pin').then(res => {
         if(res.status != 200){
@@ -116,24 +121,50 @@ export default {
         }
         console.log(res.data.result)
         res.data.result.forEach(element => {
-            this.addMarker(new window.kakao.maps.LatLng(element.coordy, element.coordx),element.no,element.name);
+            this.addMarker(new window.kakao.maps.LatLng(element.coordy, element.coordx),element.no,element.name,element.type);
         });
       });
+      if(this.$store.state.userstore.token){
+        console.log(this.$store.state.userstore)
+        axios
+          .get('/api/v1/pins/pin/pinlist/'+this.$store.state.userstore.userName)
+          .then((res) => {
+            res.data.result.forEach(element => {
+              this.favorite.push(element.pinid)
+            })
+            console.log(res.data.result)
+          })
+      }
     },
     // 포지션에 마커 추가
-    addMarker(position,id,title){
-      var marker = new window.kakao.maps.Marker({
+    addMarker(position,id,title,type){
+      var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+      var imageSize = new window.kakao.maps.Size(24, 35); 
+      var markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
+      var marker = null;
+      marker = new window.kakao.maps.Marker({
           position: position,
           title: title,
         });
+        if(type == 2){
+        marker = new window.kakao.maps.Marker({
+          position: position,
+          title: title,
+          image: markerImage
+        });
+        }
         marker.id = id;
         marker.name = title;
         this.setMarker(marker);
     },
     createMarker(info){
       this.isMarkerCreate = false;
+      var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+      var imageSize = new window.kakao.maps.Size(24, 35); 
+      var markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
       var marker = new window.kakao.maps.Marker({
-          position: info.latlng
+          position: info.latlng,
+          image: markerImage
         });
         this.setMarker(marker)
     },
@@ -164,6 +195,31 @@ export default {
             })
             }
         })
+    },
+    doFavorite(){
+      if(this.favorite.includes(this.selectedMarker.id)){
+        var id = this.selectedMarker.id
+        this.favorite = this.favorite.filter(function(data) {
+          return data != id;
+        });
+      }
+      else{
+        this.favorite.push(this.selectedMarker.id);
+      }
+      axios.get('/api/v1/pins/pin/register/'+this.selectedMarker.id)
+              .then(res => {
+                if(res.status != 200){
+                console.log("잘못된 api 호출 : GET : /pins/");
+                return;
+              }
+            }).catch(err => {
+              console.log(err, err.response); 
+            })
+    },
+    isFavorite(id){
+      console.log(id)
+      console.log(this.favorite)
+      return this.favorite.includes(id)
     },
     closeOverlay(){
       this.overlay.hide()
