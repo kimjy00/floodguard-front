@@ -45,6 +45,7 @@
     <MarkerModal v-if="isMarkerCreate" v-bind:latlng="selectedPos" @cancel="createMarkerCancel" @create="createMarker">
     </MarkerModal>
     <MenuTab></MenuTab>
+    <Title></Title>
   </div>
 </template>
 <style scoped>
@@ -78,12 +79,14 @@ import axios from '@/components/api/axio';
 import KaKaoOverlay from "@/components/map/overlay";
 import MenuTab from "@/components/map/MenuTab.vue"
 import MarkerModal from './MarkerModal.vue';
+import Title from './Title.vue';
 export default {
   name: "KakaoMap", // 컴포넌트 이름 지정
   props: ['item'],
   components: {
     MenuTab,
-    MarkerModal
+    MarkerModal,
+    Title
   },
   data() {
     return {
