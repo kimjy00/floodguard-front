@@ -1,8 +1,9 @@
 <template>
-    <div>
-        <div class="marker-modal">
-                    <p style="font-size:9em;color:white">Flood Guard</p>
-                    <p style="font-size:2em;color:white">안심하세요, Flood Guard가 지켜드립니다.</p>
+    <div v-if="!this.$store.state.popupstore.alertPopup">
+        <div @click="close" class="marker-modal">
+            <div>
+                <div style="font-size:9em;color:white; float:top;">Flood Guard</div>
+            </div>
         </div>
     </div>
 </template>
@@ -44,7 +45,7 @@ export default {
     },
     methods: {
         close() {
-            this.$store.state.popupstore.alertPopup = false;
+            this.$store.commit("popupstore/TitlePopupStateChange",true)
         }
     },
 }
