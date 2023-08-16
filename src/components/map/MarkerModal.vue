@@ -17,7 +17,7 @@
                         <button @click="create">생성</button>
                     </div>
                     <div class="submit">
-                        <button @click="create">닫기</button>
+                        <button @click="close">닫기</button>
                     </div>
                 </div>
                     
