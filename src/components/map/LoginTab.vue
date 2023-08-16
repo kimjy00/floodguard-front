@@ -228,7 +228,7 @@ export default {
         passwordCheck: this.rePassword,
         phonenumber: this.phonenumber
       }
-      axios.post('/api/v1/users/register', param, {})
+      axios.post('/users/register', param, {})
         .then((res) => {
           console.log(res)
           this.login();
@@ -247,7 +247,7 @@ export default {
         password: this.password
       }
       axios
-        .post(`/api/v1/users/login`, param, {})
+        .post(`/users/login`, param, {})
         .then((res) => {
           if (res.data == "아이디나 비밀번호가 틀립니다.") {
             console.log("틀림")
@@ -258,7 +258,7 @@ export default {
                 Authorization: "Bearer " + res.data,
               }
             })
-              .get("/api/v1/users/info")
+              .get("/users/info")
               .then((res2) => {
                 const payload = {
                   token: res.data,

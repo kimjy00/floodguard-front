@@ -65,7 +65,7 @@ export default {
                 comment : this.comment
             }
             axios
-                .post(`/api/v1/pins/pin`, param, {})
+                .post(`/pins/pin`, param, {})
                 .then((res) => {
                 console.log("---axios Post 성공---- ");
                 this.info.id = res.data.result;
