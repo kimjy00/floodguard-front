@@ -44,7 +44,7 @@
                  <h2>Register</h2>
                     <div class="login_id">
                         <h6>E-mail</h6>
-                        <div v-if="error">{{ error }}</div>
+                        <div v-if="error" style="color:red">{{ error }}</div>
                         <input type="email" name="" id="" placeholder="Email" v-model="email">
                     </div>
                     <div class="login_pw">
@@ -266,8 +266,45 @@ export default {
         .catch((res) => {
           this.error = "재 입력해주십시오";
           if (res.response.status == 300) {
-            this.error = "이메일을 작성해주십시오.";
+            this.error = "이메일이 비어있습니다.";
           }
+          if (res.response.status == 301) {
+            this.error = "유저이름이 비어있습니다.";
+          }
+          if (res.response.status == 302) {
+            this.error = "비밀번호란이 비어있습니다.";
+          }
+          if (res.response.status == 303) {
+            this.error = "비밀번호 확인란이 비어있습니다.";
+          }
+          if (res.response.status == 304) {
+            this.error = "휴대폰 번호란이 비어있습니다.";
+          }
+          if (res.response.status == 305) {
+            this.error = "중복된 이메일 입니다.";
+          }
+          if (res.response.status == 306) {
+            this.error = "중복된 유저이름 입니다.";
+          }
+          if (res.response.status == 307) {
+            this.error = "중복된 전화번호 입니다.";
+          }
+          if (res.response.status == 308) {
+            this.error = "올바르지 않은 이메일 형식입니다.";
+          }
+          if (res.response.status == 309) {
+            this.error = "올바르지 않은 휴대폰 형식입니다.";
+          }
+          if (res.response.status == 310) {
+            this.error = "이메일 길이는 최대 50자리 까지입니다.";
+          }
+          if (res.response.status == 311) {
+            this.error = "유저이름은 최소 4자리 ~ 최대 50자리 입니다.";
+          }
+          if (res.response.status == 312) {
+            this.error = "비밀번호가 일치하지 않습니다.";
+          }
+
           console.log(res.response.status)
         })
     },
