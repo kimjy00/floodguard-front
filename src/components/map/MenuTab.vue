@@ -2,12 +2,10 @@
    <div class="menu">
     <label for="expand-menu"><div>메뉴</div></label><input type="checkbox" id="expand-menu" name="expand-menu">
     <ul>
-        <li><a href="#" class="item" data-bs-toggle="modal" data-bs-target="#loginModal" style="content: '\f02e';"><div>프로필</div></a></li>
-        <li><a href="#" class="item"><div>지도 내 검색</div></a></li>
         <li><a href="#" class="item" @click="register"><div>회원가입</div></a></li>
         <li v v-if="!this.$store.state.userstore.logined"><a class="login-menu" href="#" @click="openLogin"><div>'\e174'</div></a></li>
         <li v v-else><a href="#" class="logout-menu" @click="logout"><div>로그아웃 기능</div></a></li>
-        <li><a href="#" class="item"><div>홈</div></a></li>
+        <li v-if="this.$store.state.userstore.userRole=='ADMIN'"><a href="#" class="item"><div>경고</div></a></li>
     </ul>
 </div>
 </template>
@@ -27,6 +25,11 @@ div.menu {
     padding: 10px;
     box-sizing: border-box;
 }
+
+.menu label::before{ content: '\e5d2'; }
+.menu li:nth-child(1) a::before{ content: '\e174'; }
+.menu li:nth-child(2) a::before{ content: '\ea77'; }
+.menu li:nth-child(3) a::before{ content: '\e004'; }
 .menu ul {
     list-style: none;
     margin: 0;
