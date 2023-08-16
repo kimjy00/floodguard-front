@@ -59,7 +59,7 @@
 .overlay-popup {
   color: white;
   background-color: rgb(34, 33, 33);
-  min-width: 200px;
+  min-width: 300px;
   min-height: 100px;
   position: absolute;
   bottom: 35px;
