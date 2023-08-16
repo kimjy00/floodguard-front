@@ -4,7 +4,7 @@
       <div class="wrap">
         <div class="login">
           <img src="../../assets/images/x.png" alt="dfsdf" data-bs-dismiss="modal"
-            style="width:10%;height:8%;position:absolute;top:4%;right:10%" @click="close">
+            style="width:4%;height:6%;position:absolute;top:19%;right:35.5%" @click="close">
           <h2>Log-in</h2>
           <div class="login_id">
             <h4>ID</h4>
@@ -31,20 +31,50 @@
   </div>
   <div v-else>
     <div class="r-login" v-if="this.$store.state.popupstore.loginPopUp">
-      <div class="child">
-        <h1>회원가입</h1>
-        <div v-if="error">{{ error }}</div>
-        <div>
-          아이디:<input type="text" v-model="id"><br>
-          이메일:<input type="text" v-model="email"><br>
-          패스워드:<input type="password" v-model="password"><br>
-          패스워드 재입력:<input type="password" v-model="rePassword"><br>
-          전화번호:<input type="text" v-model="phonenumber"><br>
-          <button @click="register">회원가입</button>
-          <button @click="close">닫기</button>
-          <button @click="toggleRegister">로그인하기</button>
+
+      <!-- Register -->
+  <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="model-body">
+            <div class="wrap">
+                <div class="login2">
+                  <img src="../../assets/images/x.png" alt="dfsdf" data-bs-dismiss="modal"
+            style="width:4%;height:6%;position:absolute;top:6.2%;left:60%" @click="close">
+                 <h2>Register</h2>
+                    <div class="login_id">
+                        <h6>E-mail</h6>
+                        <div v-if="error">{{ error }}</div>
+                        <input type="email" name="" id="" placeholder="Email" v-model="email">
+                    </div>
+                    <div class="login_pw">
+                        <h6>UserName</h6>
+                        <input type="text" name="" id="" placeholder="Password" v-model="id">
+                    </div>
+                    <div class="login_pw">
+                        <h6>Password</h6>
+                        <input type="password" name="" id="" placeholder="Password" v-model="password">
+                    </div>
+                    <div class="login_pw">
+                        <h6>PasswordCheck</h6>
+                        <input type="password" name="" id="" placeholder="Password" v-model="rePassword">
+                    </div>
+                    <div class="login_pw">
+                        <h6>PhoneNumber</h6>
+                        <input type="password" name="" id="" placeholder="Password">
+                    </div>
+                    <div class="submit">
+                      <button @click="login">로그인</button>
+                    </div>
+                    <div class="submit">
+                      <button @click="toggleRegister">로그인하기</button>
+                    </div>
+                    </div>
+                </div>
         </div>
       </div>
+    </div>
+  </div>
     </div>
   </div>
 </template>
@@ -123,7 +153,7 @@ h2 {
 }
 
 .login_id input {
-  width: 100%;
+  width: 93%;
   height: 50px;
   border-radius: 30px;
   margin-top: 10px;
@@ -138,7 +168,7 @@ h2 {
 }
 
 .login_pw input {
-  width: 100%;
+  width: 93%;
   height: 50px;
   border-radius: 30px;
   margin-top: 10px;
