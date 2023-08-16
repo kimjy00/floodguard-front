@@ -31,6 +31,9 @@ const userstore = {
         },
         logout: function(state){
           state.logined = false;
+          state.userId = null;
+          state.userName = null;
+          state.userRole = null;
           state.token = null;
           router.go(0)
         }
