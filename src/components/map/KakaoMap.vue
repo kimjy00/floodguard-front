@@ -4,7 +4,7 @@
       <slot name="overlay">
         <div class="overlay-popup" ref="overlayContent">
           <div v-if="selectedMarker">
-            <h3>{{ selectedMarker.name }}</h3>
+            <p style = "text-align: center;font-size:25px;">{{ selectedMarker.name }}</p>
             <div v-if="this.selectedMarker.type == 0">
               <div v-if="selectedMarker.loaded">
               <video class="cctv-video" autoplay ref="videoPlayer">
@@ -18,19 +18,19 @@
             </div>
             <br>
             </div>
-            <p>{{selectedMarker.comment}}</p>
+            <p style="text-align: center;">{{selectedMarker.comment}}</p>
             <p></p>
-            <a href="#" @click.prevent="closeOverlay()">close</a>
+            <div style="display: flex;justify-content: space-between;  margin: 20px;">
+            <button style = "" type="button" @click.prevent="closeOverlay()" class="btn btn-secondary">close</button>
             <div v-if="this.$store.state.userstore.userRole == 'ADMIN' && selectedMarker.type != 2">
-              <a href="#" style="float: center;" @click.prevent="removeMarker(selectedMarker.id)">삭제</a>
+              <button style = "" type="button" @click.prevent="removeMarker(selectedMarker.id)" class="btn btn-secondary">삭제</button>
             </div>
             <div v-if="this.$store.state.userstore.token && selectedMarker.type != 2">
-              <a v-if="!isFavorite(selectedMarker.id)" href="#" style="float: right;" @click.prevent="doFavorite(selectedMarker.id)">관심사 등록</a>
-              <a v-else href="#" style="float: right;" @click.prevent="doFavorite(selectedMarker.id)">관심사 해제</a>
+              <button v-if="!isFavorite(selectedMarker.id)" style = "float:right" type="button" @click.prevent="doFavorite(selectedMarker.id)" class="btn btn-secondary">관심사 등록</button>
+              <button v-else style = "float:right" type="button" @click.prevent="doFavorite(selectedMarker.id)" class="btn btn-secondary">관심사 해제</button>
             </div>
-            <div v-else>
-              <a href="#" style="float: right;" @click.prevent="removeMarker(selectedMarker.id)">삭제</a>
-            </div>
+            
+          </div>
           </div>
         </div>
       </slot>
@@ -48,15 +48,18 @@
   z-index: 1;
 }
 .overlay-popup{
-    background-color: white;
+    color:white;
+    background-color: rgb(34, 33, 33);
     min-width: 200px;
     min-height: 100px;
     position: absolute;
     bottom: 35px;
+    border-radius: 30px;
     /* right: 30px; */
     .cctv-video{
-      width: 300px;
+      width: 100%;
       height: 200px;
+      text-align: center;
     }
 }
 </style>

@@ -4,7 +4,7 @@
     <ul>
         <li><a href="#" class="item" data-bs-toggle="modal" data-bs-target="#loginModal"><div>프로필</div></a></li>
         <li><a href="#" class="item"><div>지도 내 검색</div></a></li>
-        <li><a href="#" class="item" data-bs-toggle="modal" data-bs-target="#exampleModal"><div>회원가입</div></a></li>
+        <li><a href="#" class="item" @click="register"><div>회원가입</div></a></li>
         <li v v-if="!this.$store.state.userstore.logined"><a href="#" @click="openLogin" class="item"><div>로그인 기능</div></a></li>
         <li v v-else><a href="#" class="item" @click="logout"><div>로그아웃 기능</div></a></li>
         <li><a href="#" class="item"><div>홈</div></a></li>
