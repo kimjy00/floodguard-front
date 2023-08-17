@@ -16,6 +16,9 @@ const userstore = {
         getToken: function(state){
             return state.token;
         },
+        geTitlePopup: function(state) {
+          return state.TitlePopup;
+        },
       },
       mutations : {
         loginedStateChange : function(state, value){
@@ -36,7 +39,10 @@ const userstore = {
           state.userRole = null;
           state.token = null;
           router.go(0)
-        }
+        },
+        TitlePopupStateChange : function(state, value){
+          state.TitlePopup = value;
+        },
       },
 };
 

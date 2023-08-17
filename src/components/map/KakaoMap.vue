@@ -18,7 +18,11 @@
             </div>
             <br>
           </div>
-          <p style="text-align: center;">{{ selectedMarker.comment }}</p>
+          <div v-else-if = "this.selectedMarker.type == 1">
+            <img src="../../assets/KakaoTalk_20230817_102312829.png" width="300" height="100">
+            <br>
+          </div>
+          <p style="text-align: center; white-space:normal;">{{ selectedMarker.comment }}</p>
           <p></p>
           <div style="display: flex;justify-content: space-between;  margin: 20px;">
             <button style="" type="button" @click.prevent="closeOverlay()" class="btn btn-secondary">close</button>

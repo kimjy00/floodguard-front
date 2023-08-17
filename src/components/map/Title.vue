@@ -1,6 +1,6 @@
 <template>
-    <div v-if="!this.$store.state.popupstore.alertPopup">
-        <div @click="close" class="marker-modal">
+    <div v-if="this.$store.state.userstore.TitlePopup" @click="close">
+        <div class="marker-modal">
             <div>
                 <div style="font-size:9em;color:white; float:top;">Flood Guard</div>
             </div>
@@ -45,7 +45,8 @@ export default {
     },
     methods: {
         close() {
-            this.$store.commit("popupstore/TitlePopupStateChange",true)
+            console.log(this.$store.state.userstore.TitlePopup)
+            this.$store.commit("userstore/TitlePopupStateChange",false)
         }
     },
 }

@@ -12,9 +12,6 @@ const popupstore = {
         getalertPopup: function(state) {
           return state.alertPopup;
         },
-        geTitlePopup: function(state) {
-          return state.TitlePopup;
-        },
       },
       mutations : {
         loginPopUpStateChange : function(state, value){
@@ -22,9 +19,6 @@ const popupstore = {
         },
         alertPopupStateChange : function(state, value){
           state.alertPopup = value;
-        },
-        TitlePopupStateChange : function(state, value){
-          state.TitlePopup = value;
         },
       },
 };
