@@ -3,8 +3,9 @@ const popupstore = {
     state : {
         loginPopUp: false,
         alertPopup: false,
-        TitlePagePopup: true,
+        TitlepagePopup: true,
         LogManagePopup: false,
+        EvaluatePopup: false,
     },
     getters : {
         getTitlepagePopup: function(state) {
@@ -19,6 +20,9 @@ const popupstore = {
         getLogManagePopup: function(state) {
           return state.LogManagePopup;
         },
+        getEvaluatePopup: function(state) {
+          return state.EvaluatePopup;
+        },
       },
       mutations : {
         TitlepageStateChange : function(state, value){
@@ -32,6 +36,9 @@ const popupstore = {
         },
         LogManagePopupStateChange : function(state, value){
           state.LogManagePopup = value;
+        },
+        EvaluatePopupStateChange : function(state, value){
+          state.EvaluatePopup = value;
         },
       },
 };

@@ -3,7 +3,7 @@ module.exports = defineConfig({
   transpileDependencies: true,
   outputDir: "../src/main/resources/static",  
   devServer: {  
-    proxy: "http://35.216.52.133:3000"  
+    proxy: "http://localhost:8080"  
   },  
   chainWebpack: config => {  
     const svgRule = config.module.rule("svg");    
