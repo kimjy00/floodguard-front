@@ -3,6 +3,7 @@ const userstore = {
     namespaced: true,
     state : {
         loadingStatus: false,
+        TitlePopup: true,
         logined : false,
         userId: '',
         userName: '',
@@ -40,8 +41,8 @@ const userstore = {
           state.token = null;
           router.go(0)
         },
-        TitlepagePopupStateChange : function(state, value){
-          state.TitlepagePopup = value;
+        TitlePopupStateChange : function(state, value){
+          state.TitlePopup = value;
         },
       },
 };

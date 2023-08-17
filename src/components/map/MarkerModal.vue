@@ -9,7 +9,6 @@
                     <div v-if="images" class="w-full h-full flex items-center">
                         <img :src="images" alt="image" style="max-width: 300px ; max-height: 100px;">
                     </div>
-                    지역 사진 올리기:<input type="file" class="hidden" label="File Input" name="image" accept="image/*" @change="selectImg">
                     <div class="login_pw">
                         <h4>코멘트</h4>
                         <input style = "width: 220px;height:40px;border-radius: 10px;" type="text" name="" id="" v-model="comment">
@@ -91,8 +90,6 @@ export default {
         return {
             pos:"경기도",
             comment:null,
-            images:null,
-            imageFile:null,
             info:{
                 latlng: null,
             } 
@@ -114,15 +111,6 @@ export default {
                 coordy : this.latlng.getLat(),
                 comment : this.comment
             }
-            console.log(this.imageFile)
-            let form = new FormData();
-            form.append('file',this.imageFile);
-            axios.post('/upload/file', form, {
-                header: { 'Content-Type': 'multipart/form-data' }
-            }).then( ({data}) => {
-                console.log(data)
-            })
-            .catch( err => console.log(err))
             axios
                 .post(`/pins/pin`, param, {})
                 .then((res) => {
@@ -136,12 +124,6 @@ export default {
                 .catch((res) => {
                 console.error(res);
             });
-        },
-        selectImg(e){
-            var files = e.target.files[0];
-            this.imageFile = files;
-            this.images = URL.createObjectURL(files)
-            console.log(this.images)
         },
         close(){
             this.$emit('cancel')

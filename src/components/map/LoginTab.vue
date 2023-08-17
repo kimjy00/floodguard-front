@@ -61,10 +61,10 @@
                     </div>
                     <div class="login_pw">
                         <h6>PhoneNumber</h6>
-                        <input type="password" name="" id="" placeholder="Password">
+                        <input type="password" name="" id="" placeholder="Password" v-model="phonenumber">
                     </div>
                     <div class="submit">
-                      <button @click="login">로그인</button>
+                      <button @click="login">회원가입</button>
                     </div>
                     <div class="submit">
                       <button @click="toggleRegister">로그인하기</button>

@@ -9,6 +9,8 @@
         <li v v-if="!this.$store.state.userstore.logined"><a class="login-menu" href="#" @click="openLogin"><div>로그인</div></a></li>
         <li v v-else><a href="#" class="logout-menu" @click="logout"><div>로그아웃 기능</div></a></li>
         <li v-if="this.$store.state.userstore.userRole=='ADMIN'"><a href="#" class="item" @click="openAlert"><div>경고</div></a></li>
+        <li v-if="this.$store.state.userstore.logined"><a href="#" class="delete-user" @click="deleteUser"><div>회원탈퇴</div></a></li>
+        <li><a href="#" class="shwo-info" @click="openInfo"><div>인포 보기</div></a></li>
     </ul>
 </div>
 </template>
@@ -86,7 +88,12 @@ div.menu {
 .login-eval::before{
     content: '\f091' ;
 }
-
+.shwo-info::before{
+    content: '\e645';
+}
+.delete-user::before{
+    content: '\e92b';
+}
 
 @media screen and (max-width:1023px) {
     .menu {
@@ -100,6 +107,7 @@ div.menu {
 }
 </style>
 <script>
+import axios from 'axios';
 import AdminAlert from './AdminAlert.vue';
 export default {
     name : "MenuTab",
@@ -115,6 +123,9 @@ export default {
 
     },
     methods:{
+        openInfo(){
+            this.$store.commit("userstore/TitlePopupStateChange",true)
+        },
         openLogin(){
             this.$store.state.popupstore.loginPopUp = true;
         },
@@ -130,7 +141,11 @@ export default {
         openlog(){
             this.$store.state.popupstore.LogManagePopup = true;
             
-        }
+        },
+        deleteUser(){
+            axios.delete('/users/secession');
+            this.$store.commit('userstore/logout', true);
+        }   
     }
 }
 </script>
