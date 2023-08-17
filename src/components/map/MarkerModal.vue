@@ -1,5 +1,4 @@
 <template>
-
     <div class="marker-modal">
     <div class="child">
         <h2>마커 생성기</h2>
@@ -23,9 +22,8 @@
                         <a href="#" class="gradient-btn" @click="close">닫기</a>
                     </div>
                 </div>
-                    
-    </div>
-    </div>
+            </div>
+        </div>
 
 </template>
 
