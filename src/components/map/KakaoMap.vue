@@ -46,10 +46,14 @@
       </div>
     </slot>
     <!------>
+    <div class="search__container" style="width: 100%; height: 50px; display: flex; justify-content: center;">
+      <form @submit="search" onsubmit="return false;">
+        <input class="search__input" type="text" placeholder="Search"  style="position: absolute;z-index: 3;margin-top: 10px;" v-model="serachVal">
+      </form>
+    </div>
     <MarkerModal v-if="isMarkerCreate" v-bind:latlng="selectedPos" @cancel="createMarkerCancel" @create="createMarker">
     </MarkerModal>
     <MenuTab></MenuTab>
-    <Title></Title>
   </div>
 </template>
 <style scoped>
@@ -60,7 +64,6 @@
   overflow: hidden;
   z-index: 1;
 }
-
 .overlay-popup {
   color: white;
   background-color: rgb(34, 33, 33);
@@ -83,14 +86,12 @@ import axios from '@/components/api/axio';
 import KaKaoOverlay from "@/components/map/overlay";
 import MenuTab from "@/components/map/MenuTab.vue"
 import MarkerModal from './MarkerModal.vue';
-import Title from './Title.vue';
 export default {
   name: "KakaoMap", // 컴포넌트 이름 지정
   props: ['item'],
   components: {
     MenuTab,
     MarkerModal,
-    Title
   },
   data() {
     return {
@@ -100,6 +101,7 @@ export default {
       selectedMarker: null,
       selectedPos: null,
       isMarkerCreate: false,
+      serachVal:null,
       favorite: [],
     };
   },
@@ -167,6 +169,20 @@ export default {
             console.log(res.data.result)
           })
       }
+    },
+    search(){
+      var ps = new window.kakao.maps.services.Places(); 
+      ps.keywordSearch(this.serachVal, (data,status) => {
+        console.log(status)
+        if(status == 'OK'){
+          var bounds = new window.kakao.maps.LatLngBounds();
+        for (var i=0; i<data.length; i++) {    
+            bounds.extend(new window.kakao.maps.LatLng(data[i].y, data[i].x));
+        }
+        this.map.setBounds(bounds);
+        }
+      }); 
+      console.log(this.serachVal)
     },
     // 포지션에 마커 추가
     addMarker(position, id, title, type) {
