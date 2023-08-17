@@ -1,8 +1,8 @@
 <template>
   <div id="map">
     <!------ 오버레이 존 ------>
-    <slot  name="overlay">
-      <div  class="overlay-popup" ref="overlayContent">
+    <slot name="overlay">
+      <div class="overlay-popup" ref="overlayContent">
         <div v-if="selectedMarker">
           <p style="text-align: center;font-size:25px;">{{ selectedMarker.name }}</p>
           <div v-if="this.selectedMarker.type == 0">
@@ -34,7 +34,7 @@
                 <a class="gradient-btn" v-if="!isFavorite(selectedMarker.id)"
                   @click.prevent="doFavorite(selectedMarker.id)" href="#">관심사등록</a>
 
-            
+
                 <a href="#" v-else style="float:right" type="button" @click.prevent="doFavorite(selectedMarker.id)"
                   class="gradient-btn">관심사 해제</a>
               </div>
@@ -47,19 +47,22 @@
       </div>
     </slot>
     <!------>
-    <div class="search__container"
-      style="width: 100%; height: 50px; position:absolute;display: flex;justify-content: center;z-index: 2;">
+    <div class="search_container">
       <form @submit="search" onsubmit="return false;">
-        <input class="search__input" @click="showPopularSearch" type="text" placeholder="Enter키로 검색"
-          style="width:400px;height:30px;position: absolute;border-radius: 20px;z-index: 2;margin-top: 10px;" v-model="serachVal">
-          <div class="menu">
-            <ul style="z-index:2;position:relative;margin-top: 45.5px;">
-            <li v-for="item in popularSearch" :key="item" style="background-color: white; width: 400px;">
-              {{ item }}
-            </li>
-          </ul>
-        </div>
+        <input id="search_input" class="search__input" @click="showPopularSearch" type="text" placeholder="Enter키로 검색"
+          style="width:400px;height:30px;position: relative;border-radius: 20px;z-index: 2;margin-top: 10px;"
+          v-model="serachVal">
       </form>
+      <div>
+        <ul style="-index: 2;position: relative;margin-top: 0px;right: auto;padding-left: 0px;">
+          <li v-for="item in popularSearch" :key="item"
+            style="background-color: white; width: 375px; border: 1px solid grey;">
+            <a href="#" @click="searchByPopular(item)">
+              {{ item }}
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
     <MarkerModal v-if="isMarkerCreate" v-bind:latlng="selectedPos" @cancel="createMarkerCancel" @create="createMarker">
     </MarkerModal>
@@ -77,26 +80,15 @@ a {
   color: #333;
 }
 
-/* 글자크기를 16px 맑은 고딕 굵게하고 width넓이 700, 높이 50만큼 배경색은 #ccc, 글자색은 검정색, 라인높이50px
-menu박스 가운데정렬, 글자가운데 정렬 */
-#menu {
-  font: bold 16px "malgun gothic";
-  width: 700px;
-  height: 50px;
-  background: #ccc;
-  color: black;
-  line-height: 50px;
-  margin: 0 auto;
-  text-align: center;
+.search_container {
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 20%;
+  position: absolute;
+  display: flex;
+  z-index: 2;
 }
-
-/* menu태그 자식의 ul의 자식 li를 왼쪽정렬과 넓이 140설정 */
-#menu>ul>li {
-  float: left;
-  width: 140px;
-  position: relative;
-}
-
 
 #map {
   width: 100%;
@@ -123,32 +115,30 @@ menu박스 가운데정렬, 글자가운데 정렬 */
   }
 
   .gradient-btn {
-	display: inline-block;
-	padding: 1em 2em;
-	border-radius: 0;
-	color: #b2876f;
-	margin-top: 2rem;
-	font-weight: bold;
-	font-size: 0.678rem;
-	letter-spacing: 2px;
-	text-transform: uppercase;
-	text-decoration: none;
-	background: linear-gradient(
-		to right,
-		rgba(#b2876f, 0) 25%,
-		rgba(#b2876f, 0.8) 75%
-	);
-	background-position: 1% 50%;
-	background-size: 400% 300%;
-	border: 1px solid #b2876f;
-	@include transition;
+    display: inline-block;
+    padding: 1em 2em;
+    border-radius: 0;
+    color: #b2876f;
+    margin-top: 2rem;
+    font-weight: bold;
+    font-size: 0.678rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: linear-gradient(to right,
+        rgba(#b2876f, 0) 25%,
+        rgba(#b2876f, 0.8) 75%);
+    background-position: 1% 50%;
+    background-size: 400% 300%;
+    border: 1px solid #b2876f;
+    @include transition;
 
-	&:hover {
-		color: white;
-		color: #fff;
-		background-position: 99% 50%;
-	}
-}
+    &:hover {
+      color: white;
+      color: #fff;
+      background-position: 99% 50%;
+    }
+  }
 
 
 }
@@ -217,6 +207,7 @@ export default {
       });
       window.kakao.maps.event.addListener(this.map, 'click', () => {
         this.closeOverlay();
+        this.closePopularSearch();
       });
       this.overlay = new KaKaoOverlay(this.map, this.$refs.overlayContent)
 
@@ -261,6 +252,8 @@ export default {
               console.log(data)
             })
             .catch(err => console.log(err))
+          document.getElementById("search_input").blur();
+          this.closePopularSearch();
         }
       });
       console.log(this.serachVal)
@@ -362,6 +355,13 @@ export default {
           this.popularSearch = res.data.result;
         })
 
+    },
+    searchByPopular(item){
+      this.serachVal = item;
+      this.search()
+    },
+    closePopularSearch(){
+      this.popularSearch = null;
     }
   },
 };
