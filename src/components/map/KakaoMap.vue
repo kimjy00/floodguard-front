@@ -18,7 +18,7 @@
             </div>
             <br>
           </div>
-          <div v-else-if = "this.selectedMarker.type == 1">
+          <div v-else-if="this.selectedMarker.type == 1">
             <img src="../../assets/KakaoTalk_20230817_102312829.png" width="300" height="100">
             <br>
           </div>
@@ -46,9 +46,20 @@
       </div>
     </slot>
     <!------>
-    <div class="search__container" style="width: 100%; height: 50px; display: flex; justify-content: center;">
+    <div class="search__container"
+      style="width: 100%; height: 50px; position:absolute;display: flex; justify-content: center;z-index: 2;">
       <form @submit="search" onsubmit="return false;">
-        <input class="search__input" type="text" placeholder="Search"  style="position: absolute;z-index: 3;margin-top: 10px;" v-model="serachVal">
+        
+        <input class="search__input" @click="showPopularSearch" type="text" placeholder="Search"
+          style="width:400px;height:30px;position: absolute;border-radius: 20px;z-index: 2;margin-top: 10px;" v-model="serachVal">
+          <div class="menu">
+            <ul style="z-index:2;position:relative;margin-top: 45.5px;">
+            <li v-for="item in popularSearch" :key="item" style="background-color: white; width: 400px;">
+              {{ item }}
+            </li>
+          </ul>
+        </div>
+          
       </form>
     </div>
     <MarkerModal v-if="isMarkerCreate" v-bind:latlng="selectedPos" @cancel="createMarkerCancel" @create="createMarker">
@@ -57,6 +68,37 @@
   </div>
 </template>
 <style scoped>
+ul li {
+  list-style: none;
+}
+
+/* a태그에 텍스트 밑줄을 없애고 색상을 #333 */
+a {
+  text-decoration: none;
+  color: #333;
+}
+
+/* 글자크기를 16px 맑은 고딕 굵게하고 width넓이 700, 높이 50만큼 배경색은 #ccc, 글자색은 검정색, 라인높이50px
+menu박스 가운데정렬, 글자가운데 정렬 */
+#menu {
+  font: bold 16px "malgun gothic";
+  width: 700px;
+  height: 50px;
+  background: #ccc;
+  color: black;
+  line-height: 50px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* menu태그 자식의 ul의 자식 li를 왼쪽정렬과 넓이 140설정 */
+#menu>ul>li {
+  float: left;
+  width: 140px;
+  position: relative;
+}
+
+
 #map {
   width: 100%;
   height: 100vh;
@@ -64,6 +106,7 @@
   overflow: hidden;
   z-index: 1;
 }
+
 .overlay-popup {
   color: white;
   background-color: rgb(34, 33, 33);
@@ -101,8 +144,9 @@ export default {
       selectedMarker: null,
       selectedPos: null,
       isMarkerCreate: false,
-      serachVal:null,
+      serachVal: null,
       favorite: [],
+      popularSearch: null
     };
   },
   setup() {
@@ -170,26 +214,26 @@ export default {
           })
       }
     },
-    search(){
-      var ps = new window.kakao.maps.services.Places(); 
-      ps.keywordSearch(this.serachVal, (data,status) => {
+    search() {
+      var ps = new window.kakao.maps.services.Places();
+      ps.keywordSearch(this.serachVal, (data, status) => {
         console.log(status)
-        if(status == 'OK'){
+        if (status == 'OK') {
           var bounds = new window.kakao.maps.LatLngBounds();
-        for (var i=0; i<data.length; i++) {    
+          for (var i = 0; i < data.length; i++) {
             bounds.extend(new window.kakao.maps.LatLng(data[i].y, data[i].x));
-        }
-        this.map.setBounds(bounds);
-        const param = {
-            searchval:this.serachVal
-        }
-        axios.post('/search/do', param)
-        .then( ({data}) => {
-                console.log(data)
+          }
+          this.map.setBounds(bounds);
+          const param = {
+            searchval: this.serachVal
+          }
+          axios.post('/search/do', param)
+            .then(({ data }) => {
+              console.log(data)
             })
-            .catch( err => console.log(err))
+            .catch(err => console.log(err))
         }
-      }); 
+      });
       console.log(this.serachVal)
     },
     // 포지션에 마커 추가
@@ -282,6 +326,14 @@ export default {
       this.selectedMarker = null;
       this.overlay.hide()
     },
+
+    showPopularSearch() {
+      axios.get('/search/info')
+        .then((res) => {
+          this.popularSearch = res.data.result;
+        })
+
+    }
   },
 };
 </script>

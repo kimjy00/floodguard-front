@@ -38,12 +38,12 @@
   width: 100%; 
   height: 100%;  
   background-color: rgba(0, 0, 0, 0.8);
-  z-index: 3;
+  z-index: 7;
   .child{
     color:white;
     position: relative; 
     width: 300px; 
-    height: 350px;  
+    height: 400px;  
     background-color: 
     black; 
     text-align: center;

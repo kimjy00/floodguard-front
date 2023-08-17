@@ -1,5 +1,6 @@
 <template>
-  
+  <Titlepage></Titlepage>
+  <LogManage></LogManage>
   <LoginTab></LoginTab>
   <KakaoMap ref = "maps" @updateData="updateData">
   </KakaoMap>
@@ -10,12 +11,16 @@
 import KakaoMap from "./components/map/KakaoMap.vue";
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import LoginTab from "./components/map/LoginTab.vue";
+import LogManage from "./components/map/LogManage.vue";
+import Titlepage from "./components/map/Titlepage.vue"
 export default {
   name: "App",
   components: {
     KakaoMap,
     LoadingSpinner,
     LoginTab,
+    LogManage,
+    Titlepage,
   },
   data() {
     return {
