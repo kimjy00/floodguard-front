@@ -24,10 +24,10 @@
                 </div>
                 <div style="display: flex; justify-content: space-between;margin:20px;margin-top:90px;">
                     <div class="submit">
-                        <button @click="alert">테스트 알림</button>
+                        <a href="#" class="gradient-btn" @click="alert">테스트 알림</a>
                     </div>
                     <div class="submit">
-                        <button @click="close">닫기</button>
+                        <a href="#" class="gradient-btn" @click="close">닫기</a>
                     </div>
                 </div>
 
@@ -55,7 +55,7 @@
     color: white;
     position: relative;
     width: 300px;
-    height: 230px;
+    height: 300px;
     background-color:
         black;
     text-align: center;
@@ -112,7 +112,38 @@ body {
 
 .box select option {
     padding: 30px
+
 }
+
+
+.gradient-btn {
+	display: inline-block;
+	padding: 1em 2em;
+	border-radius: 0;
+	color: #b2876f;
+	margin-top: 2rem;
+	font-weight: bold;
+	font-size: 0.678rem;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	text-decoration: none;
+	background: linear-gradient(
+		to right,
+		rgba(#b2876f, 0) 25%,
+		rgba(#b2876f, 0.8) 75%
+	);
+	background-position: 1% 50%;
+	background-size: 400% 300%;
+	border: 1px solid #b2876f;
+	@include transition;
+
+	&:hover {
+		color: white;
+		color: #fff;
+		background-position: 99% 50%;
+	}
+}
+
 </style>
 
 <script>
