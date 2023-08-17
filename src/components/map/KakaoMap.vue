@@ -1,8 +1,8 @@
 <template>
   <div id="map">
     <!------ 오버레이 존 ------>
-    <slot name="overlay">
-      <div class="overlay-popup" ref="overlayContent">
+    <slot  name="overlay">
+      <div  class="overlay-popup" ref="overlayContent">
         <div v-if="selectedMarker">
           <p style="text-align: center;font-size:25px;">{{ selectedMarker.name }}</p>
           <div v-if="this.selectedMarker.type == 0">
@@ -47,20 +47,19 @@
     </slot>
     <!------>
     <div class="search__container"
-      style="width: 100%; height: 50px; position:absolute;display: flex; justify-content: center;z-index: 2;">
-      <form @submit="search" onsubmit="return false;">
-        
-        <input class="search__input" @click="showPopularSearch" type="text" placeholder="Search"
-          style="width:400px;height:30px;position: absolute;border-radius: 20px;z-index: 2;margin-top: 10px;" v-model="serachVal">
-          <div class="menu">
-            <ul style="z-index:2;position:relative;margin-top: 45.5px;">
-            <li v-for="item in popularSearch" :key="item" style="background-color: white; width: 400px;">
-              {{ item }}
+      style="width: 100%; height: 50px; position:absolute;display: flex; justify-content: center;z-index: 2; margin-left: 500px; flex-direction: column; " >
+      <div>
+        <form @submit="search" onsubmit="return false;">
+        <input  id="search_input"  class="search__input" @click="showPopularSearch" type="text" placeholder="Search"
+          style="width:400px;height:30px;position: relative;border-radius: 20px;z-index: 2;margin-top: 10px;"
+          v-model="serachVal">
+          <ul style="z-index:2;position:absolute;margin-top: 0px;margin-right: 50px;padding-left: 15px;width: 200px;  ">
+            <li v-for="item in popularSearch" :key="item" style="background-color: white;border: 1px solid #ebebeb; width: 375px;" @click="searchPopular(item)">
+                {{ item }}
             </li>
           </ul>
-        </div>
-          
       </form>
+      </div>
     </div>
     <MarkerModal v-if="isMarkerCreate" v-bind:latlng="selectedPos" @cancel="createMarkerCancel" @create="createMarker">
     </MarkerModal>
@@ -71,34 +70,9 @@
 ul li {
   list-style: none;
 }
-
-/* a태그에 텍스트 밑줄을 없애고 색상을 #333 */
-a {
-  text-decoration: none;
-  color: #333;
+ul li:hover{
+  background-color: aqua;
 }
-
-/* 글자크기를 16px 맑은 고딕 굵게하고 width넓이 700, 높이 50만큼 배경색은 #ccc, 글자색은 검정색, 라인높이50px
-menu박스 가운데정렬, 글자가운데 정렬 */
-#menu {
-  font: bold 16px "malgun gothic";
-  width: 700px;
-  height: 50px;
-  background: #ccc;
-  color: black;
-  line-height: 50px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-/* menu태그 자식의 ul의 자식 li를 왼쪽정렬과 넓이 140설정 */
-#menu>ul>li {
-  float: left;
-  width: 140px;
-  position: relative;
-}
-
-
 #map {
   width: 100%;
   height: 100vh;
@@ -187,10 +161,12 @@ export default {
         }
       });
       window.kakao.maps.event.addListener(this.map, 'click', () => {
+        document.getElementById("search_input").blur();
         this.closeOverlay();
+        this.closePopularSearch();
       });
       this.overlay = new KaKaoOverlay(this.map, this.$refs.overlayContent)
-
+      this.closeOverlay();  
       axios
         .get('/pins/pin').then(res => {
           if (res.status != 200) {
@@ -214,6 +190,11 @@ export default {
           })
       }
     },
+    searchPopular(item){
+      console.log("asdasd")
+      this.serachVal = item;
+      this.search();
+    },
     search() {
       var ps = new window.kakao.maps.services.Places();
       ps.keywordSearch(this.serachVal, (data, status) => {
@@ -232,6 +213,8 @@ export default {
               console.log(data)
             })
             .catch(err => console.log(err))
+            document.getElementById("search_input").blur();
+            this.closePopularSearch();
         }
       });
       console.log(this.serachVal)
@@ -333,6 +316,9 @@ export default {
           this.popularSearch = res.data.result;
         })
 
+    },
+    closePopularSearch(){
+      this.popularSearch = null;
     }
   },
 };
