@@ -3,7 +3,7 @@
    <div class="menu">
     <label for="expand-menu"><div>메뉴</div></label><input type="checkbox" id="expand-menu" name="expand-menu">
     <ul>
-        <li><a href="#" class="item" @click="register"><div>회원가입</div></a></li>
+        <li v v-if="!this.$store.state.popupstore.LogManagePopup"><a href="#" class="item" @click="openlog"><div>회원가입</div></a></li>
         <li v v-if="!this.$store.state.userstore.logined"><a class="login-menu" href="#" @click="openLogin"><div>'\e174'</div></a></li>
         <li v v-else><a href="#" class="logout-menu" @click="logout"><div>로그아웃 기능</div></a></li>
         <li v-if="this.$store.state.userstore.userRole=='ADMIN'"><a href="#" class="item" @click="openAlert"><div>경고</div></a></li>
@@ -117,6 +117,10 @@ export default {
         },
         openAlert(){
             this.$store.state.popupstore.alertPopup = true;
+        },
+        openlog(){
+            this.$store.state.popupstore.LogManagePopup = true;
+            
         }
     }
 }
