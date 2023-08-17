@@ -3,7 +3,6 @@ const popupstore = {
     state : {
         loginPopUp: false,
         alertPopup: false,
-        TitlepagePopup: true,
         LogManagePopup: false,
         EvaluatePopup: false,
     },
