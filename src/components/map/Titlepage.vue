@@ -45,8 +45,8 @@ export default {
     },
     methods: {
         close() {
-            console.log(this.$store.state.userstore.TitlePopup)
-            this.$store.commit("popupstore/TitlepagePopupStateChange",false)
+            console.log(this.$store.state.popupstore.TitlepagePopup)
+            this.$store.commit("popupstore/TitlepageStateChange",false)
         }
     },
 }

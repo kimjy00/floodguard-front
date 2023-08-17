@@ -40,8 +40,8 @@ const userstore = {
           state.token = null;
           router.go(0)
         },
-        TitlePopupStateChange : function(state, value){
-          state.TitlePopup = value;
+        TitlepagePopupStateChange : function(state, value){
+          state.TitlepagePopup = value;
         },
       },
 };
