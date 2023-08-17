@@ -1,4 +1,5 @@
 <template>
+  <Evaluate></Evaluate>
   <Titlepage></Titlepage>
   <LogManage></LogManage>
   <LoginTab></LoginTab>
@@ -13,6 +14,8 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import LoginTab from "./components/map/LoginTab.vue";
 import LogManage from "./components/map/LogManage.vue";
 import Titlepage from "./components/map/Titlepage.vue"
+import Evaluate from "./components/map/Evaluate.vue";
+
 export default {
   name: "App",
   components: {
@@ -21,6 +24,7 @@ export default {
     LoginTab,
     LogManage,
     Titlepage,
+    Evaluate,
   },
   data() {
     return {

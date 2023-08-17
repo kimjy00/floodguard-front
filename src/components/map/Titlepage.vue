@@ -3,6 +3,7 @@
         <div class="marker-modal">
             <div>
                 <div style="font-size:9em;color:white; float:top;">Flood Guard</div>
+                <div style="font-size:2em;color:white;text-align: center;">Flood Guard " 내 손 속에 안전 "</div>
             </div>
         </div>
     </div>
