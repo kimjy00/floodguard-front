@@ -180,6 +180,14 @@ export default {
             bounds.extend(new window.kakao.maps.LatLng(data[i].y, data[i].x));
         }
         this.map.setBounds(bounds);
+        const param = {
+            searchval:this.serachVal
+        }
+        axios.post('/search/do', param)
+        .then( ({data}) => {
+                console.log(data)
+            })
+            .catch( err => console.log(err))
         }
       }); 
       console.log(this.serachVal)
